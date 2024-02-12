@@ -14,7 +14,6 @@ RUN apt-get update && \
 
 FROM gcr.io/distroless/python3
 
-COPY --from=builder /root/.local /root/.local
 WORKDIR /app
 
 ENTRYPOINT ["python3"]

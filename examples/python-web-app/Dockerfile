@@ -1,4 +1,4 @@
-FROM ubuntu
+FROM ubuntu as builder
 
 WORKDIR /app
 
@@ -9,6 +9,13 @@ RUN apt-get update && \
     apt-get install -y python3 python3-pip && \
     pip install -r requirements.txt && \
     cd devops
+
+# Runtime stage
+
+FROM gcr.io/distroless/python3
+
+COPY --from=builder /root/.local /root/.local
+WORKDIR /app
 
 ENTRYPOINT ["python3"]
 CMD ["manage.py", "runserver", "0.0.0.0:8000"]
